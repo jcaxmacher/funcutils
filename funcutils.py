@@ -4,6 +4,7 @@ from functools import wraps
 
 logger = logging.getLogger('funcutils')
 
+
 def memoize(key_maker):
     """Given a function which can generate hashable keys from another
     functions arguments, memoize returns a decorator that will cache
@@ -14,22 +15,18 @@ def memoize(key_maker):
         def wrapper(*args, **kwargs):
             # Get key for cache and values that will be passed on to
             # the decorated function through updated keyword arguments
-            key, upd = key_maker(*args, **kwargs)
-            func_name, func_module = f.func_name, f.__module__
+            key = key_maker(*args, **kwargs)
             if cache.get(key):
-                logger.debug('Returning from cache for %s.%s method with'
-                             ' cache key: %s' % (func_module, func_name,
-                                                 repr(key)))
+                logger.debug('Returning from cache key: %s' % (repr(key)))
                 return cache[key]
             else:
-                kwargs.update(upd)
                 results = f(*args, **kwargs)
-                logger.debug('Caching results of execution of %s.%s'
-                             ' method' % (func_module, func_name))
+                logger.debug('Caching results of execution')
                 cache[key] = results
                 return results
         return wrapper
     return decorator
+
 
 def caller_info(levels_down=1):
     """Return module and function name of function two levels
@@ -47,6 +44,7 @@ def caller_info(levels_down=1):
         del mod
     return mod_name, func
 
+
 def flatten(l):
     """Take a heterogeneous list which may contain sublists
     and flatten them into a single stream of values"""
@@ -56,6 +54,7 @@ def flatten(l):
                 yield j
         else:
             yield i
+
 
 def tuplify(l, modifier=None):
     """Convert lists and sublists to tuples
@@ -70,6 +69,7 @@ def tuplify(l, modifier=None):
             new_l.append(i)
     return tuple(new_l)
 
+
 def is_seq(item):
     """Check for sequences"""
     if getattr(item, '__iter__', None) and not isinstance(item, bytearray):
@@ -77,14 +77,17 @@ def is_seq(item):
     else:
         return False
 
+
 def remove_ws(s):
     """Remove whitespace from string"""
     return ' '.join(s.split())
+
 
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in xrange(0, len(l), n):
         yield l[i:i+n]
+
 
 def pipe(init, func_list=None):
     """Pipe the results and inputs of a list of functions
