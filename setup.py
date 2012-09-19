@@ -11,7 +11,7 @@ with open('LICENSE') as f:
 
 setup(
     name='funcutils',
-    version='0.0.1',
+    version='0.0.2',
     description='Simple helper functions',
     long_description=readme,
     author='Jeremy Axmacher',
