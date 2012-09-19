@@ -1,3 +1,6 @@
+"""
+Basic utility functions, including one for function memoization.
+"""
 import logging
 import inspect
 from functools import wraps
@@ -10,9 +13,13 @@ def memoize(key_maker):
     functions arguments, memoize returns a decorator that will cache
     the results of the decorated function"""
     def decorator(f):
+        """Returns a decorated function which will cache results for
+        the given function."""
         cache = {}
+
         @wraps(f)
         def wrapper(*args, **kwargs):
+            """The internal wrapper function for the decorator."""
             # Get key for cache and values that will be passed on to
             # the decorated function through updated keyword arguments
             key = key_maker(*args, **kwargs)
@@ -34,7 +41,7 @@ def caller_info(levels_down=1):
     this one"""
     # inspect stack for caller module and function
     func, mod, mod_name = None, None, None
-    caller = inspect.stack()[levels_down+1]
+    caller = inspect.stack()[levels_down + 1]
     try:
         func = caller[3]
         mod = inspect.getmodule(caller[0])
@@ -86,7 +93,7 @@ def remove_ws(s):
 def chunks(l, n):
     """Yield successive n-sized chunks from l."""
     for i in xrange(0, len(l), n):
-        yield l[i:i+n]
+        yield l[i:i + n]
 
 
 def pipe(init, func_list=None):
